@@ -15,14 +15,14 @@ const packedExtention = "vlc"
 
 var ErrEmptyPath = errors.New("path to file is not specified")
 
-var vlcCmd = &cobra.Command{
+var vlcPackCmd = &cobra.Command{
 	Short: "Pack file using variable-length code alg",
 	Use:   "vlc",
 	Run:   vlcPack,
 }
 
 func init() {
-	packCmd.AddCommand(vlcCmd)
+	packCmd.AddCommand(vlcPackCmd)
 }
 
 func vlcPack(_cmd *cobra.Command, args []string) {
