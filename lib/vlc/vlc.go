@@ -23,8 +23,6 @@ func Decode(str string) string {
 	bChunks := hexChunks.ToBin()
 
 	_ = bChunks
-
-	// hex chunks -> binay chunks
 	// BinChunks -> bStr
 	// build decoding tree
 	// decode bStr -> text

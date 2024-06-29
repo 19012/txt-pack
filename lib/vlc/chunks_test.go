@@ -124,3 +124,45 @@ func TestHexChunks_ToBin(t *testing.T) {
 		})
 	}
 }
+
+func TestHexChunks_ToString(t *testing.T) {
+	tests := []struct {
+		name string
+		hcs  HexChunks
+		want string
+	}{
+		{
+			name: "base test",
+			hcs:  HexChunks{"20", "FF", "01"},
+			want: "20 FF 01",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.hcs.ToString(); got != tt.want {
+				t.Errorf("HexChunks_ToString = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestBinChunks_ToString(t *testing.T) {
+	tests := []struct {
+		name string
+		bcs  BinChunks
+		want string
+	}{
+		{
+			name: "base test",
+			bcs:  BinChunks{"00000000", "11111111"},
+			want: "0000000011111111",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.bcs.ToString(); got != tt.want {
+				t.Errorf("BinChunks_ToString = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

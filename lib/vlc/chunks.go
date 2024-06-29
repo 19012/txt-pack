@@ -43,6 +43,7 @@ func (bc BinChunk) toHex() HexChunk {
 	}
 }
 
+// ToString joins chunks into one line and returns as string
 func (hcs HexChunks) ToString() string {
 	switch len(hcs) {
 	case 0:
@@ -57,6 +58,23 @@ func (hcs HexChunks) ToString() string {
 
 	for _, chunk := range hcs[1:] {
 		buf.WriteRune(sep)
+		buf.WriteString(string(chunk))
+	}
+
+	return buf.String()
+}
+
+// ToString joins chunks into one line and returns as string
+func (bcs BinChunks) ToString() string {
+	switch len(bcs) {
+	case 0:
+		return ""
+	case 1:
+		return string(bcs[0])
+	}
+	var buf strings.Builder
+
+	for _, chunk := range bcs {
 		buf.WriteString(string(chunk))
 	}
 
