@@ -1,6 +1,7 @@
 package vlc
 
 import (
+	"fmt"
 	"strings"
 	"unicode"
 )
@@ -22,8 +23,10 @@ func Decode(str string) string {
 
 	bChunks := hexChunks.ToBin()
 
-	_ = bChunks
-	// BinChunks -> bStr
+	bStr := bChunks.ToString()
+
+	fmt.Println(bStr)
+
 	// build decoding tree
 	// decode bStr -> text
 	return " "
