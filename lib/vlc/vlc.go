@@ -1,7 +1,6 @@
 package vlc
 
 import (
-	"fmt"
 	"strings"
 	"unicode"
 )
@@ -19,21 +18,15 @@ func Encode(str string) string {
 }
 
 func Decode(str string) string {
-	hexChunks := NewHexChunks(str)
+	bStr := NewHexChunks(str).ToBin().ToString()
 
-	bChunks := hexChunks.ToBin()
+	dTree := getEncodingTable().DecodintTree()
 
-	bStr := bChunks.ToString()
-
-	fmt.Println(bStr)
-
-	// build decoding tree
-	// decode bStr -> text
-	return " "
+	return returnUpperCaseLetterals(dTree.Decode(bStr))
 }
 
 // prepareText prepares text ot be fit for encode:
-// changes upper case letters to : ! + lower case letter
+// changes <upper case letter> to : ! + <lower case letter>
 func prepareText(str string) string {
 	var buf strings.Builder
 
@@ -41,6 +34,34 @@ func prepareText(str string) string {
 		if unicode.IsUpper(ch) {
 			buf.WriteRune('!')
 			buf.WriteRune(unicode.ToLower(ch))
+		} else {
+			buf.WriteRune(ch)
+		}
+	}
+	return buf.String()
+}
+
+// returnUpperCaseLetterals is opposite to prepareText, it prepares decoded test ot export:
+// chnages <spase> + ! + <lower case letter> to <upper case letter>
+func returnUpperCaseLetterals(str string) string {
+	var buf strings.Builder
+
+	var isCapital bool
+
+	for _, ch := range str {
+		if isCapital {
+			if !unicode.IsLetter(ch) {
+				buf.WriteRune(ch)
+			} else {
+				buf.WriteRune(unicode.ToUpper(ch))
+			}
+			isCapital = false
+
+			continue
+		}
+		if ch == '!' {
+			isCapital = true
+			continue
 		} else {
 			buf.WriteRune(ch)
 		}
@@ -59,12 +80,15 @@ func encodeBin(str string) string {
 	return buf.String()
 }
 
-func runeToBin(r rune) string {
-	if res, ok := getEncodingTable()[r]; !ok {
-		panic("unknown character: " + string(r))
-	} else {
-		return res
+func runeToBin(ch rune) string {
+	table := getEncodingTable()
+
+	res, ok := table[ch]
+	if !ok {
+		panic("unknown character: " + string(ch))
 	}
+
+	return res
 }
 
 func getEncodingTable() encodingTable {
